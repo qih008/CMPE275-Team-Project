@@ -79,9 +79,9 @@ public class UserController {
 	}
 
     // Get a User
-	@GetMapping("/user/{id}")
-	public ResponseEntity<User> getUserByEmail(@PathVariable(value = "id") Long userId) {
-	    User user = userRepository.findOne(userId);
+	@GetMapping("/user/{email}")
+	public ResponseEntity<User> getUserByEmail(@PathVariable(value = "email") String userEmail) {
+	    User user = userRepository.findOne(userEmail);
 	    if(user == null) {
 	        return ResponseEntity.notFound().build();
 	    }
@@ -89,8 +89,8 @@ public class UserController {
 	}
 
     // Update a User
-	@PutMapping("/user/{id}")
-	public ResponseEntity<User> updatePlayer(@PathVariable(value = "id") Long userId,                                     
+	@PutMapping("/user/{email}")
+	public ResponseEntity<User> updatePlayer(@PathVariable(value = "email") String userEamil,                                     
 	        @RequestParam(value="name", required=true) String name,
 	        @RequestParam(value="email", required=true) String email,
 	        @RequestParam(value="password", required=true) String password,
@@ -99,7 +99,7 @@ public class UserController {
 	        @RequestParam(value="state", required=false) String state,
 	        @RequestParam(value="zip", required=false) String zip)
 	{
-	    User user = userRepository.findOne(userId);
+	    User user = userRepository.findOne(userEamil);
 	    if(user == null) {
 	        return ResponseEntity.notFound().build();
 	    }
@@ -144,9 +144,9 @@ public class UserController {
 	}
 
     // Delete a User
-	@DeleteMapping("/user/{id}")
-    public ResponseEntity<User> deleteUser(@PathVariable(value = "id") Long userId) {
-        User user = userRepository.findOne(userId);
+	@DeleteMapping("/user/{email}")
+    public ResponseEntity<User> deleteUser(@PathVariable(value = "email") String userEmail) {
+        User user = userRepository.findOne(userEmail);
         if(user == null) {
             return ResponseEntity.notFound().build();
         }

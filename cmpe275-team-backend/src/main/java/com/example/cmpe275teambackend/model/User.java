@@ -17,12 +17,11 @@ import java.util.ArrayList;
 public class User implements Serializable{
 	
 	@Id
-    @GeneratedValue(strategy = GenerationType.AUTO)   // auto generate key ID
-    private Long id;
-	
-    @NotBlank
     private String email;        // require element, check unique in controller
     
+    @GeneratedValue(strategy = GenerationType.AUTO)   // auto generate User ID
+    private Long id;
+	
 	@NotBlank
     private String name;         // require element, can't be null or blank
     

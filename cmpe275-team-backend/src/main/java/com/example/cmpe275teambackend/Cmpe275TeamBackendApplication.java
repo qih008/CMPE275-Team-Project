@@ -9,6 +9,9 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 public class Cmpe275TeamBackendApplication {
 
 	public static void main(String[] args) {
+		
 		SpringApplication.run(Cmpe275TeamBackendApplication.class, args);
+	
 	}
+
 }

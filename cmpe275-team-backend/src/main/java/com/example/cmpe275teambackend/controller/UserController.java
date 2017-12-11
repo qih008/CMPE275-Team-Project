@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.example.cmpe275teambackend.model.Address;
+import com.example.cmpe275teambackend.model.Ticket;
 import com.example.cmpe275teambackend.model.Transaction;
 import com.example.cmpe275teambackend.model.User;
 import com.example.cmpe275teambackend.repository.UserRepository;
@@ -89,7 +90,11 @@ public class UserController {
 	    
 	    List<Transaction> transactionList = user.getTransactions();   // test transaction mapping correct
 	    for(Transaction transaction : transactionList){
-	    	System.out.println(transaction.getId());
+	    	System.out.println("transaction id is: " + transaction.getId());
+	    	List<Ticket> ticketList = transaction.getTickets();
+	    	for(Ticket ticket : ticketList){
+	    		System.out.println("ticket id is: " + ticket.getId());
+	    	}
 	    }
 	    
 	    return ResponseEntity.ok().body(user);

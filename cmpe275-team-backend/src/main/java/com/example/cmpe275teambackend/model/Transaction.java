@@ -5,7 +5,7 @@ import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.example.cmpe275teambackend.model.User;
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
@@ -28,6 +28,11 @@ public class Transaction implements Serializable{
      
     private String price;  
     
+    @OneToMany(mappedBy = "transaction")
+    @JsonIgnore
+    private List<Ticket> tickets = new ArrayList<>();    // one transaction can map to many tickets
+  
+ 
     // constructors, setters, getters, etc.
     
     public void setId(Long id){
@@ -54,11 +59,12 @@ public class Transaction implements Serializable{
     	return user;
     }
     
-//    public void setOpponents(List<Player> opponents){
-//    	this.opponents = opponents;
-//    }
-//    
-//    public List<Player> getOpponents(){
-//    	return opponents;
-//    }
+    public void setTickets(List<Ticket> tickets){
+    	this.tickets = tickets;
+    }
+    
+    public List<Ticket> getTickets(){
+    	return tickets;
+    }
+    
 }

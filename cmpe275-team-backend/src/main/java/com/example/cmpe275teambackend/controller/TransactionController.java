@@ -31,7 +31,7 @@ public class TransactionController {
 	
     // Create a new Transaction
 	@PostMapping("/transaction")
-	public ResponseEntity<Transaction> createUser( 
+	public ResponseEntity<Transaction> createTransaction( 
 			@RequestParam(value="user_email", required=true) String user_email,
 			@RequestParam(value="price", required=true) String price)
 	{

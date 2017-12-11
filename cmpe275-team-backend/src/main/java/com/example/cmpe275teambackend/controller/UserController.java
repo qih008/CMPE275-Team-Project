@@ -87,21 +87,6 @@ public class UserController {
 	    }
 	    return ResponseEntity.ok().body(user);
 	}
-	
-	// Check Login info
-	@GetMapping("/user/{email}/{password}")
-	public boolean checkLogin(@PathVariable(value = "email") String userEmail,
-			                  @PathVariable(value = "password") String userPassword) {
-	    User user = userRepository.findOne(userEmail);
-	    if(user == null) {
-	        return false;
-	    }
-	    
-	    if(!user.getPassword().equals(userPassword))
-	    	return false;
-	    
-	    return true;
-	}
 
     // Update a User
 	@PutMapping("/user/{email}")
@@ -182,6 +167,21 @@ public class UserController {
         userRepository.delete(user);
         return ResponseEntity.ok().body(user);
     }
+	
+	// Check Login info
+	@GetMapping("/user/{email}/{password}")
+	public boolean checkLogin(@PathVariable(value = "email") String userEmail,
+			                  @PathVariable(value = "password") String userPassword) {
+	    User user = userRepository.findOne(userEmail);
+	    if(user == null) {
+	        return false;
+	    }
+	    
+	    if(!user.getPassword().equals(userPassword))
+	    	return false;
+	    
+	    return true;
+	}
 
 }
 

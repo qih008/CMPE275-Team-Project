@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.example.cmpe275teambackend.model.Train;
+import com.example.cmpe275teambackend.model.User;
 import com.example.cmpe275teambackend.repository.TrainRepository;
 
 import javax.validation.Valid;
@@ -22,6 +23,16 @@ public class TrainController {
 	@GetMapping("/trains")
 	public List<Train> getAllTrains() {
 	    return trainRepository.findAll();
+	}
+	
+    // Get a Train
+	@GetMapping("/train/{name}")
+	public ResponseEntity<Train> getTrainByName(@PathVariable(value = "name") String trainName) {
+	    Train train = trainRepository.findOne(trainName);
+	    if(train == null) {
+	        return ResponseEntity.notFound().build();
+	    }
+	    return ResponseEntity.ok().body(train);
 	}
 	
 	// Reset system
@@ -82,4 +93,6 @@ public class TrainController {
 		}
 		return trainRepository.findAll();
 	}
+	
+	
 }

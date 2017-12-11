@@ -4,6 +4,9 @@ import org.hibernate.validator.constraints.NotBlank;
 
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import com.example.cmpe275teambackend.model.Transaction;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
@@ -13,15 +16,15 @@ import java.util.List;
 import java.util.ArrayList;
 
 @Entity
-@Table(name = "player")
+@Table(name = "user")
 public class User implements Serializable{
 	
 	@Id
     private String email;        // require element, check unique in controller
     
-    @GeneratedValue(strategy = GenerationType.AUTO)   // auto generate User ID
-    private Long id;
-	
+//    @GeneratedValue(strategy = GenerationType.AUTO)   // auto generate User ID
+//    private Long id;
+
 	@NotBlank
     private String name;         // require element, can't be null or blank
     
@@ -32,20 +35,19 @@ public class User implements Serializable{
     @Embedded
     private Address address = new Address();    // embedded from address class
     
-//    @ManyToOne(fetch = FetchType.EAGER)
-//    @JoinColumn(name = "sponsor_Id")
-//    private Sponsor sponsor;                   // one player can only map to one sponsor
-//    
-    
+    @OneToMany(mappedBy = "user")
+    @JsonIgnore
+    private List<Transaction> transactions = new ArrayList<>();    // one user can map to many transactions
+  
     // constructors, setters, getters, etc.
     
-    public void setId(Long id){
-    	this.id = id;
-    }
-    
-    public Long getId(){
-    	return id;
-    }
+//    public void setId(Long id){
+//    	this.id = id;
+//    }
+//    
+//    public Long getId(){
+//    	return id;
+//    }
     
     public void setName(String name){
     	this.name = name;
@@ -80,14 +82,14 @@ public class User implements Serializable{
     	return address;
     }
     
-//    public void setSponsor(Sponsor sponsor){
-//    	this.sponsor = sponsor;
-//    }
-//    
-//    public Sponsor getSponsor(){
-//    	return sponsor;
-//    }
-//    
+    public void setTransactions(List<Transaction> transactions){
+    	this.transactions = transactions;
+    }
+    
+    public List<Transaction> getTransactions(){
+    	return transactions;
+    }
+    
 //    public void setOpponents(List<Player> opponents){
 //    	this.opponents = opponents;
 //    }

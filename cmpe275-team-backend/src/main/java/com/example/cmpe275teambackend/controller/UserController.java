@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.example.cmpe275teambackend.model.Address;
+import com.example.cmpe275teambackend.model.Transaction;
 import com.example.cmpe275teambackend.model.User;
 import com.example.cmpe275teambackend.repository.UserRepository;
 
@@ -85,6 +86,12 @@ public class UserController {
 	    if(user == null) {
 	        return ResponseEntity.notFound().build();
 	    }
+	    
+	    List<Transaction> transactionList = user.getTransactions();   // test transaction mapping correct
+	    for(Transaction transaction : transactionList){
+	    	System.out.println(transaction.getId());
+	    }
+	    
 	    return ResponseEntity.ok().body(user);
 	}
 
@@ -92,7 +99,6 @@ public class UserController {
 	@PutMapping("/user/{email}")
 	public ResponseEntity<User> updatePlayer(@PathVariable(value = "email") String userEamil,                                     
 	        @RequestParam(value="name", required=true) String name,
-	        @RequestParam(value="email", required=true) String email,
 	        @RequestParam(value="password", required=true) String password,
 	        @RequestParam(value="street", required=false) String street,
 	        @RequestParam(value="city", required=false) String city,
@@ -104,28 +110,6 @@ public class UserController {
 	        return ResponseEntity.notFound().build();
 	    }
 	    
-	    // check duplicate email for updated user
-	 	List<User> userList = userRepository.findAll();
-	 	for(int i = 0; i < userList.size(); i++){
-	 		User temp = userList.get(i);
-	 		if(temp.getEmail().equals(email) && !user.getEmail().equals(email))
-	 			return ResponseEntity.badRequest().build();
-	 	}
-	    
-//	    if(sponsor_id != null){                                            // check params have sponsor_id
-//	    	//System.out.println(sponsor_id);
-//	    	
-//	        Sponsor sponsor = sponsorRepository.findOne(sponsor_id);       // check if sponsor exist
-//		    if(sponsor != null){
-//			    player.setSponsor(sponsor);
-//			    //System.out.println("!!!!!!!!!!!!");
-//		    }
-//		    else
-//			    return ResponseEntity.badRequest().build();
-//	    }
-//	    else
-//	    	player.setSponsor(null);
-	    
 	    Address address = new Address();
 		address.setCity(city);
 		address.setState(state);
@@ -133,12 +117,9 @@ public class UserController {
 		address.setZip(zip);
 		
 	    user.setName(name);
-		user.setEmail(email);
 		user.setPassword(password);	
 		user.setAddress(address);
-		
-		
-	    
+			    
 	    User updatedUser = userRepository.save(user);          // save updated user
 	    return ResponseEntity.ok(updatedUser);
 	}

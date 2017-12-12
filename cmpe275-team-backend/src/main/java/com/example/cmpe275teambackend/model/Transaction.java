@@ -26,7 +26,7 @@ public class Transaction implements Serializable{
     @JoinColumn(name = "user_email")
     private User user;                   // one transaction can only map to one user
      
-    private String price;  
+    private int price;  
     
     @OneToMany(mappedBy = "transaction")
     @JsonIgnore
@@ -43,11 +43,11 @@ public class Transaction implements Serializable{
     	return id;
     }
     
-    public void setPrice(String price){
+    public void setPrice(int price){
     	this.price = price;
     }
     
-    public String getPrice(){
+    public int getPrice(){
     	return price;
     }
     

@@ -33,7 +33,7 @@ public class TransactionController {
 	@PostMapping("/transaction")
 	public ResponseEntity<Transaction> createTransaction( 
 			@RequestParam(value="user_email", required=true) String user_email,
-			@RequestParam(value="price", required=true) String price)
+			@RequestParam(value="price", required=true) int price)
 	{
 
 		Transaction transaction = new Transaction();
@@ -46,7 +46,7 @@ public class TransactionController {
 		else
 		    return ResponseEntity.badRequest().build();
 			
-		transaction.setPrice(price);
+		transaction.setPrice(price + 1);          // service fee is $1
 		
 		Transaction newtransaction = transactionRepository.save(transaction);    // save new create transaction
 	    return ResponseEntity.ok(newtransaction);

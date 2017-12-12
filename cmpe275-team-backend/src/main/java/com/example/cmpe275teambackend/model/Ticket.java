@@ -26,7 +26,7 @@ public class Ticket implements Serializable{
     @JoinColumn(name = "transaction_id")
     private Transaction transaction;                   // one ticket can only map to one transaction
      
-    private String user_email;
+    private String user_name;
     
     private String train_name;
     
@@ -36,7 +36,7 @@ public class Ticket implements Serializable{
     
     private String type;
     
-    private String price;  
+    private int price;  
     
     @Temporal(TemporalType.TIMESTAMP)
     @CreatedDate
@@ -52,12 +52,12 @@ public class Ticket implements Serializable{
     	return id;
     }
     
-    public void setUser_email(String user_email){
-    	this.user_email = user_email;
+    public void setUser_name(String user_name){
+    	this.user_name = user_name;
     }
     
-    public String getUser_email(){
-    	return user_email;
+    public String getUser_name(){
+    	return user_name;
     }
     
     public void setTrain_name(String train_name){
@@ -92,11 +92,11 @@ public class Ticket implements Serializable{
     	return type;
     }
     
-    public void setPrice(String price){
+    public void setPrice(int price){
     	this.price = price;
     }
     
-    public String getPrice(){
+    public int getPrice(){
     	return price;
     }
     

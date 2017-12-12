@@ -11,7 +11,9 @@ import com.example.cmpe275teambackend.repository.TrainRepository;
 
 import javax.validation.Valid;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 @RestController
@@ -47,14 +49,22 @@ public class TrainController {
 	@PutMapping("/resetTrain/{capacity}")
 	public List<Train> resetTrain(@PathVariable(value = "capacity") int capacity){
 		
-		List<Train> curTrains = trainRepository.findAll();
+		// set search availability to next 30 days
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		
-		if(curTrains == null || curTrains.size() == 0){
-			for(int i = 6; i < 21; i++){
-				for(int j = 0; j < 60; j += 15){
-					Train trainN = new Train();             // reset Northbound Train
+		//List<Train> curTrains = trainRepository.findAll();
+		trainRepository.deleteAll();
+		
+		for(int i = 6; i < 21; i++){
+			for(int j = 0; j < 60; j += 15){
+				Calendar cal = Calendar.getInstance();
+				for(int k = 0; k < 30; k++){
+								
+					String date = sdf.format(cal.getTime());
 					String start_time = "" + (i < 10 ? "0" + i : i) + (j == 0 ? "00" : j);
-					String name = "NB" + start_time;
+					
+					Train trainN = new Train();             // reset Northbound Train
+					String name = "NB" + start_time + " " + date;
 					trainN.setName(name);
 					trainN.setDirection("North");
 					trainN.setStart_time(start_time);
@@ -63,19 +73,26 @@ public class TrainController {
 					trainRepository.save(trainN);
 					
 					Train trainS = new Train();             // reset Southbound Train 
-					name = "SB" + start_time;
+					name = "SB" + start_time + " " + date;
 					trainS.setName(name);
 					trainS.setDirection("South");
 					trainS.setStart_time(start_time);
 					trainS.setExpress(j == 0 ? true : false);
 					trainS.setCapacity(capacity);
 					trainRepository.save(trainS);
+					
+					cal.add(Calendar.DATE, 1);
 				}
 			}
+		}
+		
+		Calendar cal = Calendar.getInstance();
+		for(int k = 0; k < 30; k++){
+			String date = sdf.format(cal.getTime());
 			
 			Train trainN = new Train();             // Train end at 9PM inclusive
 			String start_time = "2100";
-			String name = "NB" + start_time;
+			String name = "NB" + start_time + " " + date;
 			trainN.setName(name);
 			trainN.setDirection("North");
 			trainN.setStart_time(start_time);
@@ -84,7 +101,7 @@ public class TrainController {
 			trainRepository.save(trainN);
 			
 			Train trainS = new Train();          
-			name = "SB" + start_time;
+			name = "SB" + start_time + " " + date;
 			trainS.setName(name);
 			trainS.setDirection("South");
 			trainS.setStart_time(start_time);
@@ -92,13 +109,9 @@ public class TrainController {
 			trainS.setCapacity(capacity);
 			trainRepository.save(trainS);
 			
+			cal.add(Calendar.DATE, 1);
 		}
-		else{
-			for(Train train : curTrains){
-				train.setCapacity(capacity);
-				trainRepository.save(train);
-			}
-		}
+
 		return trainRepository.findAll();
 	}
 	

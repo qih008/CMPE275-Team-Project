@@ -34,9 +34,13 @@ public class Ticket implements Serializable{
     
     //private String train_name;
     
-    private String departure;
+    private String departure_station;
     
-    private String arrival;
+    private String departure_time;
+    
+    private String arrival_station;
+    
+    private String arrival_time;
     
     private String type;
     
@@ -72,20 +76,36 @@ public class Ticket implements Serializable{
 //    	return train_name;
 //    }
     
-    public void setDeparture(String departure){
-    	this.departure = departure;
+    public void setDeparture_station(String departure_station){
+    	this.departure_station = departure_station;
     }
     
-    public String getDeparture(){
-    	return departure;
+    public String getDeparture_station(){
+    	return departure_station;
     }
     
-    public void setArrival(String arrival){
-    	this.arrival = arrival;
+    public void setDeparture_time(String departure_time){
+    	this.departure_time = departure_time;
     }
     
-    public String getArrival(){
-    	return arrival;
+    public String getDeparture_time(){
+    	return departure_time;
+    }
+    
+    public void setArrival_station(String arrival_station){
+    	this.arrival_station = arrival_station;
+    }
+    
+    public String getArrival_station(){
+    	return arrival_station;
+    }
+    
+    public void setArrival_time(String arrival_time){
+    	this.arrival_time = arrival_time;
+    }
+    
+    public String getArrival_time(){
+    	return arrival_time;
     }
     
     public void setType(String type){

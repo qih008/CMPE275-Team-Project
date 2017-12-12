@@ -40,8 +40,10 @@ public class TicketController {
 			@RequestParam(value="transaction_id", required=true) Long transaction_id,
 			@RequestParam(value="user_name", required=true) String user_name,
 			@RequestParam(value="train_name", required=true) String train_name,
-			@RequestParam(value="departure", required=true) String departure,
-			@RequestParam(value="arrival", required=true) String arrival,
+			@RequestParam(value="departure_station", required=true) String departure_station,
+			@RequestParam(value="departure_time", required=true) String departure_time,
+			@RequestParam(value="arrival_station", required=true) String arrival_station,
+			@RequestParam(value="arrival_time", required=true) String arrival_time,
 			@RequestParam(value="type", required=true) String type,
 			@RequestParam(value="price", required=true) int price)
 	{
@@ -62,8 +64,10 @@ public class TicketController {
 		ticket.setTrain(new_train);
 		
 		ticket.setUser_name(user_name);
-		ticket.setDeparture(departure);
-		ticket.setArrival(arrival);
+		ticket.setDeparture_station(departure_station);
+		ticket.setDeparture_time(departure_time);
+		ticket.setArrival_station(arrival_station);
+		ticket.setArrival_time(arrival_time);
 		ticket.setType(type);
 		ticket.setPrice(price);
 		Ticket newticket = ticketRepository.save(ticket);    // save new create transaction

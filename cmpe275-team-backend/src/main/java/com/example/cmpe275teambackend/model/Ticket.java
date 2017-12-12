@@ -25,10 +25,14 @@ public class Ticket implements Serializable{
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "transaction_id")
     private Transaction transaction;                   // one ticket can only map to one transaction
-     
+   
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "train_name")
+    private Train train;                              // one ticket can only map to one train
+  
     private String user_name;
     
-    private String train_name;
+    //private String train_name;
     
     private String departure;
     
@@ -60,13 +64,13 @@ public class Ticket implements Serializable{
     	return user_name;
     }
     
-    public void setTrain_name(String train_name){
-    	this.train_name = train_name;
-    }
-    
-    public String getTrain_name(){
-    	return train_name;
-    }
+//    public void setTrain_name(String train_name){
+//    	this.train_name = train_name;
+//    }
+//    
+//    public String getTrain_name(){
+//    	return train_name;
+//    }
     
     public void setDeparture(String departure){
     	this.departure = departure;
@@ -106,6 +110,14 @@ public class Ticket implements Serializable{
     
     public Transaction getTransaction(){
     	return transaction;
+    }
+    
+    public void setTrain(Train train){
+    	this.train = train;
+    }
+    
+    public Train getTrain(){
+    	return train;
     }
     
     public Date getDate(){

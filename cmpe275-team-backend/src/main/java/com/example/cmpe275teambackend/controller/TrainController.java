@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import com.example.cmpe275teambackend.model.Ticket;
 import com.example.cmpe275teambackend.model.Train;
 import com.example.cmpe275teambackend.model.User;
 import com.example.cmpe275teambackend.repository.TrainRepository;
@@ -32,6 +33,13 @@ public class TrainController {
 	    if(train == null) {
 	        return ResponseEntity.notFound().build();
 	    }
+	    
+	    // check ticket and train mapping
+	    List<Ticket> tickets = train.getTickets();
+	    for(Ticket ticket : tickets){
+	    	System.out.println("Tickets' id under current train: " + ticket.getId());
+	    }
+	    
 	    return ResponseEntity.ok().body(train);
 	}
 	

@@ -58,10 +58,10 @@ public class TicketController {
 		// reduce selected train's capacity
 		Train train = trainRepository.findOne(train_name);
 		train.setCapacity(train.getCapacity() - 1);
-		trainRepository.save(train);
+		Train new_train = trainRepository.save(train);
+		ticket.setTrain(new_train);
 		
 		ticket.setUser_name(user_name);
-		ticket.setTrain_name(train_name);
 		ticket.setDeparture(departure);
 		ticket.setArrival(arrival);
 		ticket.setType(type);
@@ -94,8 +94,7 @@ public class TicketController {
         
         for(Ticket temp : tickets){
 		    // restore selected train's capacity
-            String train_name = temp.getTrain_name();
-		    Train train = trainRepository.findOne(train_name);
+		    Train train = temp.getTrain();
 		    train.setCapacity(train.getCapacity() + 1);
 		    trainRepository.save(train);
             ticketRepository.delete(temp);

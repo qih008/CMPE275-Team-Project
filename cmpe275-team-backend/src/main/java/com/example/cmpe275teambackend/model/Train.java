@@ -4,6 +4,7 @@ import org.hibernate.validator.constraints.NotBlank;
 
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
@@ -27,10 +28,10 @@ public class Train implements Serializable{
     
     private boolean express;
     
-//    @ManyToOne(fetch = FetchType.EAGER)
-//    @JoinColumn(name = "sponsor_Id")
-//    private Sponsor sponsor;                   // one player can only map to one sponsor
-//    
+    @OneToMany(mappedBy = "train")
+    @JsonIgnore
+    private List<Ticket> tickets = new ArrayList<>();    // one transaction can map to many tickets
+  
     
     // constructors, setters, getters, etc.
     
@@ -41,7 +42,6 @@ public class Train implements Serializable{
     public String getName(){
     	return name;
     }
-    
     
     public void setDirection(String direction){
     	this.direction = direction;
@@ -74,5 +74,14 @@ public class Train implements Serializable{
     public boolean getExpress(){
     	return express;
     }
+    
+    public void setTickets(List<Ticket> tickets){
+    	this.tickets = tickets;
+    }
+    
+    public List<Ticket> getTickets(){
+    	return tickets;
+    }
+   
     
 }

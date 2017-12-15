@@ -45,6 +45,8 @@ public class SearchController {
         String start_time = " ";
         String train_name = " ";
         String train_with_date = " ";
+        String dir = (departure_station < arrival_station ? "SB" : "NB");
+        
         List<Character> express_list = new ArrayList<>();
         express_list.add('A');
         express_list.add('F');
@@ -55,29 +57,32 @@ public class SearchController {
         
         if(connection == 0){
         	if(express_list.contains(departure_station) && express_list.contains(arrival_station)){
-        		if(type.equals("Regular")){
-        			if(exact_time){
-        				if(departure_station < arrival_station){             // southbound train
-        					for(int i = 6; i < 21; i++){
-        						for(int j = 0; j < 60; j += 15){
-        							String temp = " ";
-        							if(j != 0){
-        								start_time = "" + (i < 10 ? "0" + i : i) + j;
-        								train_name = "SB" + start_time;
-        								train_with_date = "SB" + start_time + " " + departure_date;
-        								temp = getSchedule(train_name, Character.toString(departure_station));
-        								//System.out.println(temp);
-        								if(temp.equals(departure_time)){
-        								    train_list.add(train_with_date);
-        								    //System.out.println(train_with_date);
-        								    return train_list;
-        								}
-        							}
-        						}
-        					}
-        				}
-        			}
-        		}
+    			if(exact_time){   				              // only one train will be return	
+					for(int i = 6; i < 22; i++){
+						for(int j = 0; j < 60; j += 15){
+							if(i == 21 && j != 0)             // last departure is 2100
+								break;                       
+							
+							String temp = " ";							                        
+							start_time = "" + (i < 10 ? "0" + i : i) + (j == 0 ? "00" : j);
+							train_name = dir + start_time;
+							train_with_date = dir + start_time + " " + departure_date;
+							temp = getSchedule(train_name, Character.toString(departure_station));
+							//System.out.println(temp);
+							if(temp.equals(departure_time)){
+								if(type.equals("Regular") && j == 0)
+									return train_list;
+								else if(type.equals("Express") && j != 0)
+									return train_list;
+								else{
+							        train_list.add(train_with_date);
+							        //System.out.println(train_with_date);
+							        return train_list;
+								}
+							}
+						}
+					}
+    			}
         	}
         }
         

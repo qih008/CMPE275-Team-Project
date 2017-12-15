@@ -15,7 +15,11 @@ import com.example.cmpe275teambackend.repository.TrainRepository;
 import javax.validation.Valid;
 
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.PriorityQueue;
+import java.util.Queue;
 
 @RestController
 public class SearchController {
@@ -83,7 +87,113 @@ public class SearchController {
 						}
 					}
     			}
+    			else{                                          // return top 5 choice
+    				int regular_count = 0;
+    				int express_count = 0;
+    				Queue<String> timePriorityQueue = new PriorityQueue<>(7, timeComparator);
+			    	HashMap<String, String> map = new HashMap<>();
+    				for(int i = 6; i < 22; i++){
+						for(int j = 0; j < 60; j += 15){
+							if(i == 21 && j != 0)             // last departure is 2100
+								break;  
+							
+							String temp = " ";							                        
+							start_time = "" + (i < 10 ? "0" + i : i) + (j == 0 ? "00" : j);
+							train_name = dir + start_time;
+							train_with_date = dir + start_time + " " + departure_date;
+							temp = getSchedule(train_name, Character.toString(departure_station));
+							String temp_arrival = getSchedule(train_name, Character.toString(arrival_station));
+							if(earlierTime(departure_time, temp) || temp.equals(departure_time)){
+							    if(type.equals("Regular") && j != 0){
+								    if(train_list.size() == 5){
+								    	return train_list;
+								    }
+								    else
+								    	train_list.add(train_with_date + " Arrival time is: " + temp_arrival);								    
+							    }
+							    else if(type.equals("Express") && j == 0){
+							    	if(train_list.size() == 5){
+								    	return train_list;
+								    }
+								    else
+								    	train_list.add(train_with_date + " Arrival time is: " + temp_arrival);
+							    }
+							    else if(type.equals("Any")){           // compare both regular and express train
+							    	if(regular_count < 5 && j != 0){
+							    		timePriorityQueue.add(temp_arrival);
+							    	    map.put(temp_arrival, train_with_date + " Arrival time is: " + temp_arrival);
+							    	    regular_count++;
+							    	    //System.out.println(train_with_date + " Arrival time is: " + temp_arrival);
+							    	}
+							    	if(express_count < 2 && j == 0){
+							    		timePriorityQueue.add(temp_arrival);
+							    	    map.put(temp_arrival, train_with_date + " Arrival time is: " + temp_arrival);
+							    	    express_count++;
+							    	    //System.out.println(train_with_date + " Arrival time is: " + temp_arrival);
+							    	}
+							    	if(i == 21 || timePriorityQueue.size() == 7){
+							    		int limit = (5 < timePriorityQueue.size() ? 5 : timePriorityQueue.size());
+							    		for(int x = 0; x < limit; x++){
+							    			//System.out.println(timePriorityQueue.peek());
+							    			train_list.add(map.get(timePriorityQueue.poll()));
+							    		}
+							    		return train_list;
+							    	}
+							    }
+							}
+						}
+    				}
+    				return train_list;
+    			}
         	}
+        	else{     // when connection is 0 and stations are not include express, express type wil be empty
+        		if(!type.equals("Express")){                      // in this case, any = regular
+        			if(exact_time){   				              // only one train will be return	
+    					for(int i = 6; i < 21; i++){
+    						for(int j = 0; j < 60; j += 15){
+    							if( j != 0){                     // don't support express
+        							String temp = " ";							                        
+        							start_time = "" + (i < 10 ? "0" + i : i) + (j == 0 ? "00" : j);
+        							train_name = dir + start_time;
+        							train_with_date = dir + start_time + " " + departure_date;
+        							temp = getSchedule(train_name, Character.toString(departure_station));
+        							//System.out.println(temp);
+        							if(temp.equals(departure_time)){
+        							    train_list.add(train_with_date);
+        							    //System.out.println(train_with_date);
+        							    return train_list;
+        							}  							
+    						    }
+    						}
+    					}
+        			}
+        			else{     // return top 5 reuglar train
+        				for(int i = 6; i < 21; i++){
+    						for(int j = 0; j < 60; j += 15){ 
+    							if(j != 0){
+        							String temp = " ";							                        
+        							start_time = "" + (i < 10 ? "0" + i : i) + (j == 0 ? "00" : j);
+        							train_name = dir + start_time;
+        							train_with_date = dir + start_time + " " + departure_date;
+        							temp = getSchedule(train_name, Character.toString(departure_station));
+        							String temp_arrival = getSchedule(train_name, Character.toString(arrival_station));
+        							if(earlierTime(departure_time, temp) || temp.equals(departure_time)){
+        								if(train_list.size() == 5){
+        								    return train_list;
+        								}
+        								else
+        								    train_list.add(train_with_date + " Arrival time is: " + temp_arrival);		    
+        							}								
+    							}
+    						}
+        				}
+        			}
+        		}
+        	}
+        	return train_list;
+        }
+        else if(connection == 1){
+        	
         }
         
         return train_list;
@@ -165,5 +275,46 @@ public class SearchController {
 		}
 		return "cannot find one!";
 	}
+	
+	// helper function to compare time
+	public boolean earlierTime(String t1, String t2){           // default time format xx:xx
+		int t1_hour = Integer.parseInt(t1.substring(0,2));
+		int t2_hour = Integer.parseInt(t2.substring(0,2));
+		int t1_min = Integer.parseInt(t1.substring(3));
+		int t2_min = Integer.parseInt(t2.substring(3));
+		
+		if(t1_hour < t2_hour)
+			return true;
+		else if(t1_hour > t2_hour)
+			return false;
+		else{
+			if(t1_min < t2_min)
+				return true;
+			else
+				return false;
+		}
+	}
+	
+	// comparator for time priority queue
+	public static Comparator<String> timeComparator = new Comparator<String>(){
+		@Override
+		public int compare(String t1, String t2){
+			int t1_hour = Integer.parseInt(t1.substring(0,2));
+			int t2_hour = Integer.parseInt(t2.substring(0,2));
+			int t1_min = Integer.parseInt(t1.substring(3));
+			int t2_min = Integer.parseInt(t2.substring(3));
+			
+			if(t1_hour < t2_hour)
+				return -1;
+			else if(t1_hour > t2_hour)
+				return 1;
+			else{
+				if(t1_min < t2_min)
+					return -1;
+				else
+					return 1;
+			}
+		}
+	};
 }
 

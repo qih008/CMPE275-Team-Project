@@ -342,6 +342,7 @@ public class ScheduleController {
 			@PathVariable(value = "station_name") String station_name){
 		
 		if(train_name.charAt(0) == 'S'){
+			System.out.println(train_name + " " + station_name);
 			SB_Schedule sb = sb_Repository.findOne(train_name);
 			if(sb != null){
 				switch(station_name){

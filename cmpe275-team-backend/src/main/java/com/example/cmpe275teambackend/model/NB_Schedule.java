@@ -20,6 +20,8 @@ public class NB_Schedule implements Serializable{
 	
 	@Id
     private String train_name;        // PK
+	
+	private HashMap<String, String> time_table;
     
     private String A;
     
@@ -289,6 +291,14 @@ public class NB_Schedule implements Serializable{
 
 	public void setZ(String z) {
 		Z = z;
+	}
+
+	public HashMap<String, String> getTime_table() {
+		return time_table;
+	}
+
+	public void setTime_table(HashMap<String, String> time_table) {
+		this.time_table = time_table;
 	}
     
 }

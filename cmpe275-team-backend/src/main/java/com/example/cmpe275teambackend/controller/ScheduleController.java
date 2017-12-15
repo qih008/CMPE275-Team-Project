@@ -14,6 +14,7 @@ import javax.validation.Valid;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 
 @RestController
@@ -331,14 +332,84 @@ public class ScheduleController {
 		cal.add(Calendar.MINUTE, 25);
 		nb.setA(sdf.format(cal.getTime()));
 		
-		nb_Repository.save(nb);
-	
-		
-		
-
-		
-		
+		nb_Repository.save(nb);		
 	}
 	
+	// Get specific schedule
+	@GetMapping("/getSchedule/{train_name}/{station_name}")
+	public String getSchedule(
+			@PathVariable(value = "train_name") String train_name,
+			@PathVariable(value = "station_name") String station_name){
+		
+		if(train_name.charAt(0) == 'S'){
+			SB_Schedule sb = sb_Repository.findOne(train_name);
+			if(sb != null){
+				switch(station_name){
+				    case "A": return sb.getA();
+				    case "B": return sb.getB();
+				    case "C": return sb.getC();
+				    case "D": return sb.getD();
+				    case "E": return sb.getE();
+				    case "F": return sb.getF();
+				    case "G": return sb.getG();
+				    case "H": return sb.getH();
+				    case "I": return sb.getI();
+				    case "J": return sb.getJ();
+				    case "K": return sb.getK();
+				    case "L": return sb.getL();
+				    case "M": return sb.getM();
+				    case "N": return sb.getN();
+				    case "O": return sb.getO();
+				    case "P": return sb.getP();
+				    case "Q": return sb.getQ();
+				    case "R": return sb.getR();
+				    case "S": return sb.getS();
+				    case "T": return sb.getT();
+				    case "U": return sb.getU();
+				    case "V": return sb.getV();
+				    case "W": return sb.getW();
+				    case "X": return sb.getX();
+				    case "Y": return sb.getY();
+				    case "Z": return sb.getZ();
+				    default: return "cannot find one.";
+				}
+			}				
+		}
+		else{
+			NB_Schedule nb = nb_Repository.findOne(train_name);
+			if(nb != null){
+				switch(station_name){
+				    case "A": return nb.getA();
+				    case "B": return nb.getB();
+				    case "C": return nb.getC();
+				    case "D": return nb.getD();
+				    case "E": return nb.getE();
+				    case "F": return nb.getF();
+				    case "G": return nb.getG();
+				    case "H": return nb.getH();
+				    case "I": return nb.getI();
+				    case "J": return nb.getJ();
+				    case "K": return nb.getK();
+				    case "L": return nb.getL();
+				    case "M": return nb.getM();
+				    case "N": return nb.getN();
+				    case "O": return nb.getO();
+				    case "P": return nb.getP();
+				    case "Q": return nb.getQ();
+				    case "R": return nb.getR();
+				    case "S": return nb.getS();
+				    case "T": return nb.getT();
+				    case "U": return nb.getU();
+				    case "V": return nb.getV();
+				    case "W": return nb.getW();
+				    case "X": return nb.getX();
+				    case "Y": return nb.getY();
+				    case "Z": return nb.getZ();
+				    default: return "cannot find one.";
+				}
+		    }
+		}
+		return "cannot find one!";
+	}
 }
 

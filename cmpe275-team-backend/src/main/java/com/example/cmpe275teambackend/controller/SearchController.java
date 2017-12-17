@@ -14,7 +14,9 @@ import com.example.cmpe275teambackend.repository.TrainRepository;
 
 import javax.validation.Valid;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
@@ -102,7 +104,8 @@ public class SearchController {
 						train_name = dir + start_time;
 						train_with_date = dir + start_time + " " + departure_date;
 						temp = getSchedule(train_name, Character.toString(departure_station));
-						String temp_arrival = getSchedule(train_name, Character.toString(arrival_station));
+						String real_temp = getSchedule(train_name, Character.toString(arrival_station));
+						String temp_arrival = departureToArrival(real_temp);
 						if(earlierTime(departure_time, temp) || temp.equals(departure_time)){
 						    if(type.equals("Regular") && j != 0){
 							    if(train_list.size() == 5){
@@ -148,8 +151,8 @@ public class SearchController {
     	}
     	else if(express_list.contains(departure_station) || express_list.contains(arrival_station))
     	{   // only one station is express station
-    		// in this case, 0 connection means user can only take regular train
-    		if(connection == 0){   
+    		// in this case, 0 connection and regular ticket means user can only take regular train
+    		if(connection == 0 || type.equals("Regular")){   
         		if(!type.equals("Express")){                      // in this case, any = regular
         			if(exact_time){   				              // only one train will be return	
     					for(int i = 6; i < 21; i++){
@@ -179,7 +182,8 @@ public class SearchController {
         							train_name = dir + start_time;
         							train_with_date = dir + start_time + " " + departure_date;
         							temp = getSchedule(train_name, Character.toString(departure_station));
-        							String temp_arrival = getSchedule(train_name, Character.toString(arrival_station));
+        							String real_temp = getSchedule(train_name, Character.toString(arrival_station));
+        							String temp_arrival = departureToArrival(real_temp);
         							if(earlierTime(departure_time, temp) || temp.equals(departure_time)){
         								if(train_list.size() == 5){
         								    return train_list;
@@ -196,15 +200,69 @@ public class SearchController {
     	    }
     		// one station include express, connection is 1 or 2, the result will be same
     		else if(connection == 1 || connection ==2)
-    		{
-    			
+    		{   // no need to take express train
+    			if(Math.abs(arrival_station-departure_station) < 5){
+            		if(!type.equals("Express")){                      // in this case, any = regular
+            			if(exact_time){   				              // only one train will be return	
+        					for(int i = 6; i < 21; i++){
+        						for(int j = 0; j < 60; j += 15){
+        							if( j != 0){                     // don't support express
+            							String temp = " ";							                        
+            							start_time = "" + (i < 10 ? "0" + i : i) + (j == 0 ? "00" : j);
+            							train_name = dir + start_time;
+            							train_with_date = dir + start_time + " " + departure_date;
+            							temp = getSchedule(train_name, Character.toString(departure_station));
+            							//System.out.println(temp);
+            							if(temp.equals(departure_time)){
+            							    train_list.add(train_with_date);
+            							    //System.out.println(train_with_date);
+            							    return train_list;
+            							}  							
+        						    }
+        						}
+        					}
+            			}
+            			else{     // return top 5 reuglar train
+            				for(int i = 6; i < 21; i++){
+        						for(int j = 0; j < 60; j += 15){ 
+        							if(j != 0){
+            							String temp = " ";							                        
+            							start_time = "" + (i < 10 ? "0" + i : i) + (j == 0 ? "00" : j);
+            							train_name = dir + start_time;
+            							train_with_date = dir + start_time + " " + departure_date;
+            							temp = getSchedule(train_name, Character.toString(departure_station));
+            							String real_temp = getSchedule(train_name, Character.toString(arrival_station));
+            							String temp_arrival = departureToArrival(real_temp);
+            							if(earlierTime(departure_time, temp) || temp.equals(departure_time)){
+            								if(train_list.size() == 5){
+            								    return train_list;
+            								}
+            								else
+            								    train_list.add(train_with_date + " Arrival time is: " + temp_arrival);		    
+            							}								
+        							}
+        						}
+            				}
+            			}
+            		}
+    			}
+    			else{      // distance larger than 5 station
+    				if(express_list.contains(departure_station)){     // take express first, then regular
+    					int remain = Math.abs(departure_station-arrival_station) % 5;
+    					char transfer_station = (char) (dir == "SB" ? arrival_station - remain : arrival_station + remain);
+    					
+    				}
+    				else{
+    					
+    				}
+    			}
     		}
     		
     	}
     	else
     	{   // both stations are not include express station
-    		// when connection is 0/1, user can only take reuglar train
-    		if(connection == 0 || connection == 1){   
+    		// when connection is 0/1 or Regular ticket, user can only take reuglar train
+    		if(connection == 0 || connection == 1 || type.equals("Regular")){   
         		if(!type.equals("Express")){                      // in this case, any = regular
         			if(exact_time){   				              // only one train will be return	
     					for(int i = 6; i < 21; i++){
@@ -234,7 +292,8 @@ public class SearchController {
         							train_name = dir + start_time;
         							train_with_date = dir + start_time + " " + departure_date;
         							temp = getSchedule(train_name, Character.toString(departure_station));
-        							String temp_arrival = getSchedule(train_name, Character.toString(arrival_station));
+        							String real_temp = getSchedule(train_name, Character.toString(arrival_station));
+        							String temp_arrival = departureToArrival(real_temp);
         							if(earlierTime(departure_time, temp) || temp.equals(departure_time)){
         								if(train_list.size() == 5){
         								    return train_list;
@@ -249,8 +308,56 @@ public class SearchController {
         		}
 
     	    }
-    		else if(connection == 2){
-    			
+    		else if(connection == 2)
+    		{   // no need to take express train
+    			if(Math.abs(arrival_station-departure_station) < 5){
+            		if(!type.equals("Express")){                      // in this case, any = regular
+            			if(exact_time){   				              // only one train will be return	
+        					for(int i = 6; i < 21; i++){
+        						for(int j = 0; j < 60; j += 15){
+        							if( j != 0){                     // don't support express
+            							String temp = " ";							                        
+            							start_time = "" + (i < 10 ? "0" + i : i) + (j == 0 ? "00" : j);
+            							train_name = dir + start_time;
+            							train_with_date = dir + start_time + " " + departure_date;
+            							temp = getSchedule(train_name, Character.toString(departure_station));
+            							//System.out.println(temp);
+            							if(temp.equals(departure_time)){
+            							    train_list.add(train_with_date);
+            							    //System.out.println(train_with_date);
+            							    return train_list;
+            							}  							
+        						    }
+        						}
+        					}
+            			}
+            			else{     // return top 5 reuglar train
+            				for(int i = 6; i < 21; i++){
+        						for(int j = 0; j < 60; j += 15){ 
+        							if(j != 0){
+            							String temp = " ";							                        
+            							start_time = "" + (i < 10 ? "0" + i : i) + (j == 0 ? "00" : j);
+            							train_name = dir + start_time;
+            							train_with_date = dir + start_time + " " + departure_date;
+            							temp = getSchedule(train_name, Character.toString(departure_station));
+            							String real_temp = getSchedule(train_name, Character.toString(arrival_station));
+            							String temp_arrival = departureToArrival(real_temp);
+            							if(earlierTime(departure_time, temp) || temp.equals(departure_time)){
+            								if(train_list.size() == 5){
+            								    return train_list;
+            								}
+            								else
+            								    train_list.add(train_with_date + " Arrival time is: " + temp_arrival);		    
+            							}								
+        							}
+        						}
+            				}
+            			}
+            		}
+    			}
+    			else{      // distance larger than 5 station
+    				
+    			}
     		}	
     	    return train_list;
         }            
@@ -374,5 +481,15 @@ public class SearchController {
 			}
 		}
 	};
+	
+	// change departure time to arrival time
+	public String departureToArrival(String departure_time){
+		SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+		Calendar cal = Calendar.getInstance();
+		cal.set(Calendar.HOUR_OF_DAY, Integer.parseInt(departure_time.substring(0, 2)));
+		cal.set(Calendar.MINUTE, Integer.parseInt(departure_time.substring(3)));
+		cal.add(Calendar.MINUTE, -3);
+		return sdf.format(cal.getTime());  // this is actual arrival time
+	}
 }
 

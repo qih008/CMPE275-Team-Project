@@ -48,7 +48,7 @@ public class ScheduleController {
 					sb.setTrain_name(name);
 					sb.setA(sdf.format(cal.getTime()));
 					
-					cal.add(Calendar.MINUTE, 5);
+					cal.add(Calendar.MINUTE, 8);
 					sb.setB(sdf.format(cal.getTime()));
 					
 					cal.add(Calendar.MINUTE, 8);
@@ -136,19 +136,19 @@ public class ScheduleController {
 					sb.setTrain_name(name);
 					sb.setA(sdf.format(cal.getTime()));
 					
-					cal.add(Calendar.MINUTE, 25);
+					cal.add(Calendar.MINUTE, 28);
 					sb.setF(sdf.format(cal.getTime()));
 					
-					cal.add(Calendar.MINUTE, 25);
+					cal.add(Calendar.MINUTE, 28);
 					sb.setK(sdf.format(cal.getTime()));
 					
-					cal.add(Calendar.MINUTE, 25);
+					cal.add(Calendar.MINUTE, 28);
 					sb.setP(sdf.format(cal.getTime()));
 					
-					cal.add(Calendar.MINUTE, 25);
+					cal.add(Calendar.MINUTE, 28);
 					sb.setU(sdf.format(cal.getTime()));
 					
-					cal.add(Calendar.MINUTE, 25);
+					cal.add(Calendar.MINUTE, 28);
 					sb.setZ(sdf.format(cal.getTime()));
 					
 					sb_Repository.save(sb);
@@ -166,19 +166,19 @@ public class ScheduleController {
 		sb.setTrain_name(name);
 		sb.setA(sdf.format(cal.getTime()));
 		
-		cal.add(Calendar.MINUTE, 25);
+		cal.add(Calendar.MINUTE, 28);
 		sb.setF(sdf.format(cal.getTime()));
 		
-		cal.add(Calendar.MINUTE, 25);
+		cal.add(Calendar.MINUTE, 28);
 		sb.setK(sdf.format(cal.getTime()));
 		
-		cal.add(Calendar.MINUTE, 25);
+		cal.add(Calendar.MINUTE, 28);
 		sb.setP(sdf.format(cal.getTime()));
 		
-		cal.add(Calendar.MINUTE, 25);
+		cal.add(Calendar.MINUTE, 28);
 		sb.setU(sdf.format(cal.getTime()));
 		
-		cal.add(Calendar.MINUTE, 25);
+		cal.add(Calendar.MINUTE, 28);
 		sb.setZ(sdf.format(cal.getTime()));
 		
 		sb_Repository.save(sb);
@@ -199,7 +199,7 @@ public class ScheduleController {
 					nb.setTrain_name(name);
 					nb.setZ(sdf.format(cal.getTime()));
 					
-					cal.add(Calendar.MINUTE, 5);
+					cal.add(Calendar.MINUTE, 8);
 					nb.setY(sdf.format(cal.getTime()));
 					
 					cal.add(Calendar.MINUTE, 8);
@@ -287,19 +287,19 @@ public class ScheduleController {
 					nb.setTrain_name(name);
 					nb.setZ(sdf.format(cal.getTime()));
 					
-					cal.add(Calendar.MINUTE, 25);
+					cal.add(Calendar.MINUTE, 28);
 					nb.setU(sdf.format(cal.getTime()));
 					
-					cal.add(Calendar.MINUTE, 25);
+					cal.add(Calendar.MINUTE, 28);
 					nb.setP(sdf.format(cal.getTime()));
 					
-					cal.add(Calendar.MINUTE, 25);
+					cal.add(Calendar.MINUTE, 28);
 					nb.setK(sdf.format(cal.getTime()));
 					
-					cal.add(Calendar.MINUTE, 25);
+					cal.add(Calendar.MINUTE, 28);
 					nb.setF(sdf.format(cal.getTime()));
 					
-					cal.add(Calendar.MINUTE, 25);
+					cal.add(Calendar.MINUTE, 28);
 					nb.setA(sdf.format(cal.getTime()));
 					
 					nb_Repository.save(nb);
@@ -317,19 +317,19 @@ public class ScheduleController {
 		nb.setTrain_name(name);
 		nb.setZ(sdf.format(cal.getTime()));
 		
-		cal.add(Calendar.MINUTE, 25);
+		cal.add(Calendar.MINUTE, 28);
 		nb.setU(sdf.format(cal.getTime()));
 		
-		cal.add(Calendar.MINUTE, 25);
+		cal.add(Calendar.MINUTE, 28);
 		nb.setP(sdf.format(cal.getTime()));
 		
-		cal.add(Calendar.MINUTE, 25);
+		cal.add(Calendar.MINUTE, 28);
 		nb.setK(sdf.format(cal.getTime()));
 		
-		cal.add(Calendar.MINUTE, 25);
+		cal.add(Calendar.MINUTE, 28);
 		nb.setF(sdf.format(cal.getTime()));
 		
-		cal.add(Calendar.MINUTE, 25);
+		cal.add(Calendar.MINUTE, 28);
 		nb.setA(sdf.format(cal.getTime()));
 		
 		nb_Repository.save(nb);		

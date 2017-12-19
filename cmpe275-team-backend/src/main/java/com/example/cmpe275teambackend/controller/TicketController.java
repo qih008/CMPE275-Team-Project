@@ -59,7 +59,71 @@ public class TicketController {
 		
 		// reduce selected train's capacity
 		Train train = trainRepository.findOne(train_name);
-		train.setCapacity(train.getCapacity() - 1);
+		if(train_name.charAt(0) == 'S'){                        // southbound train
+		    for(char i = departure_station.charAt(0); i < arrival_station.charAt(0); i++){
+				switch(Character.toString(i)){
+			    case "A": train.setA(train.getA() - 1);	break;
+			    case "B": train.setB(train.getB() - 1);	break;
+			    case "C": train.setC(train.getC() - 1);	break;
+			    case "D": train.setD(train.getD() - 1);	break;
+			    case "E": train.setE(train.getE() - 1);	break;
+			    case "F": train.setF(train.getF() - 1);	break;
+			    case "G": train.setG(train.getG() - 1);	break;
+			    case "H": train.setH(train.getH() - 1);	break;
+			    case "I": train.setI(train.getI() - 1);	break;
+			    case "J": train.setJ(train.getJ() - 1);	break;
+			    case "K": train.setK(train.getK() - 1);	break;
+			    case "L": train.setL(train.getL() - 1);	break;
+			    case "M": train.setM(train.getM() - 1);	break;
+			    case "N": train.setN(train.getN() - 1);	break;
+			    case "O": train.setO(train.getO() - 1);	break;
+			    case "P": train.setP(train.getP() - 1);	break;
+			    case "Q": train.setQ(train.getQ() - 1);	break;
+			    case "R": train.setR(train.getR() - 1);	break;
+			    case "S": train.setS(train.getS() - 1);	break;
+			    case "T": train.setT(train.getT() - 1);	break;
+			    case "U": train.setU(train.getU() - 1);	break;
+			    case "V": train.setV(train.getV() - 1);	break;
+			    case "W": train.setW(train.getW() - 1);	break;
+			    case "X": train.setX(train.getX() - 1);	break;
+			    case "Y": train.setY(train.getY() - 1);	break;
+			    //case "Z": train.setZ(train.getZ() - 1);
+
+			    }
+		    }
+		    //train.setCapacity(train.getCapacity() - 1);
+		}
+		else{                                                   // northbound train
+		    for(char i = departure_station.charAt(0); i > arrival_station.charAt(0); i--){
+				switch(Character.toString(i)){
+			    //case "A": train.setA(train.getA() - 1);
+			    case "B": train.setB(train.getB() - 1);	break;
+			    case "C": train.setC(train.getC() - 1);	break;
+			    case "D": train.setD(train.getD() - 1);	break;
+			    case "E": train.setE(train.getE() - 1);	break;
+			    case "F": train.setF(train.getF() - 1);	break;
+			    case "G": train.setG(train.getG() - 1);	break;
+			    case "H": train.setH(train.getH() - 1);	break;
+			    case "I": train.setI(train.getI() - 1);	break;
+			    case "J": train.setJ(train.getJ() - 1);	break;
+			    case "K": train.setK(train.getK() - 1);	break;
+			    case "L": train.setL(train.getL() - 1);	break;
+			    case "M": train.setM(train.getM() - 1);	break;
+			    case "N": train.setN(train.getN() - 1);	break;
+			    case "O": train.setO(train.getO() - 1);	break;
+			    case "P": train.setP(train.getP() - 1);	break;
+			    case "Q": train.setQ(train.getQ() - 1);	break;
+			    case "R": train.setR(train.getR() - 1);	break;
+			    case "S": train.setS(train.getS() - 1);	break;
+			    case "T": train.setT(train.getT() - 1);	break;
+			    case "U": train.setU(train.getU() - 1);	break;
+			    case "V": train.setV(train.getV() - 1);	break;
+			    case "W": train.setW(train.getW() - 1);	break;
+			    case "X": train.setX(train.getX() - 1);	break;
+			    case "Y": train.setY(train.getY() - 1);	break;
+				}
+		    }
+		}
 		Train new_train = trainRepository.save(train);
 		ticket.setTrain(new_train);
 		
@@ -99,7 +163,75 @@ public class TicketController {
         for(Ticket temp : tickets){
 		    // restore selected train's capacity
 		    Train train = temp.getTrain();
-		    train.setCapacity(train.getCapacity() + 1);
+		    String train_name = train.getName();
+		    String departure_station = temp.getDeparture_station();
+		    String arrival_station = temp.getArrival_station();
+			if(train_name.charAt(0) == 'S'){                        // southbound train
+			    for(char i = departure_station.charAt(0); i < arrival_station.charAt(0); i++){
+					switch(Character.toString(i)){
+				    case "A": train.setA(train.getA() + 1);	break;
+				    case "B": train.setB(train.getB() + 1);	break;
+				    case "C": train.setC(train.getC() + 1);	break;
+				    case "D": train.setD(train.getD() + 1);	break;
+				    case "E": train.setE(train.getE() + 1);	break;
+				    case "F": train.setF(train.getF() + 1);	break;
+				    case "G": train.setG(train.getG() + 1);	break;
+				    case "H": train.setH(train.getH() + 1);	break;
+				    case "I": train.setI(train.getI() + 1);	break;
+				    case "J": train.setJ(train.getJ() + 1);	break;
+				    case "K": train.setK(train.getK() + 1);	break;
+				    case "L": train.setL(train.getL() + 1);	break;
+				    case "M": train.setM(train.getM() + 1);	break;
+				    case "N": train.setN(train.getN() + 1);	break;
+				    case "O": train.setO(train.getO() + 1);	break;
+				    case "P": train.setP(train.getP() + 1);	break;
+				    case "Q": train.setQ(train.getQ() + 1);	break;
+				    case "R": train.setR(train.getR() + 1);	break;
+				    case "S": train.setS(train.getS() + 1);	break;
+				    case "T": train.setT(train.getT() + 1);	break;
+				    case "U": train.setU(train.getU() + 1);	break;
+				    case "V": train.setV(train.getV() + 1);	break;
+				    case "W": train.setW(train.getW() + 1);	break;
+				    case "X": train.setX(train.getX() + 1);	break;
+				    case "Y": train.setY(train.getY() + 1);	break;
+				    //case "Z": train.setZ(train.getZ() + 1);	break;
+
+				    }
+			    }
+			    //train.setCapacity(train.getCapacity() + 1);
+			}
+			else{                                                   // northbound train
+			    for(char i = departure_station.charAt(0); i > arrival_station.charAt(0); i--){
+					switch(Character.toString(i)){
+				    //case "A": train.setA(train.getA() + 1);
+				    case "B": train.setB(train.getB() + 1);	break;
+				    case "C": train.setC(train.getC() + 1);	break;
+				    case "D": train.setD(train.getD() + 1);	break;
+				    case "E": train.setE(train.getE() + 1);	break;
+				    case "F": train.setF(train.getF() + 1);	break;
+				    case "G": train.setG(train.getG() + 1);	break;
+				    case "H": train.setH(train.getH() + 1);	break;
+				    case "I": train.setI(train.getI() + 1);	break;
+				    case "J": train.setJ(train.getJ() + 1);	break;
+				    case "K": train.setK(train.getK() + 1);	break;
+				    case "L": train.setL(train.getL() + 1);	break;
+				    case "M": train.setM(train.getM() + 1);	break;
+				    case "N": train.setN(train.getN() + 1);	break;
+				    case "O": train.setO(train.getO() + 1);	break;
+				    case "P": train.setP(train.getP() + 1);	break;
+				    case "Q": train.setQ(train.getQ() + 1);	break;
+				    case "R": train.setR(train.getR() + 1);	break;
+				    case "S": train.setS(train.getS() + 1);	break;
+				    case "T": train.setT(train.getT() + 1);	break;
+				    case "U": train.setU(train.getU() + 1);	break;
+				    case "V": train.setV(train.getV() + 1);	break;
+				    case "W": train.setW(train.getW() + 1);	break;
+				    case "X": train.setX(train.getX() + 1);	break;
+				    case "Y": train.setY(train.getY() + 1);	break;
+					}
+			    }
+			}
+		    //train.setCapacity(train.getCapacity() + 1);
 		    trainRepository.save(train);
             ticketRepository.delete(temp);
         }

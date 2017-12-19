@@ -334,18 +334,7 @@ public class ScheduleController {
 		
 		nb_Repository.save(nb);		
 	}
-
-    // Get all schedule
-    @GetMapping("/getSchedule/SouthAll")
-    public List<SB_Schedule> getSBSchedule() {
-        return sb_Repository.findAll();
-    }
-
-    @GetMapping("/getSchedule/NorthAll")
-    public List<NB_Schedule> getNBSchedule() {
-        return nb_Repository.findAll();
-    }
-
+	
 	// Get specific schedule
 	@GetMapping("/getSchedule/{train_name}/{station_name}")
 	public String getSchedule(

@@ -200,7 +200,7 @@ public class SearchController {
     		// one station include express, connection is 1 or 2, the result will be same
     		else if(connection == 1 || connection ==2)
     		{   // no need to take express train
-    			if(Math.abs(arrival_station-departure_station) < 5){
+    			if(Math.abs(arrival_station-departure_station) < 6){
             		if(!type.equals("Express")){                      // in this case, any = regular
             			if(exact_time){   				              // only one train will be return	
         					for(int i = 6; i < 21; i++){
@@ -249,7 +249,7 @@ public class SearchController {
 					int remain = Math.abs(departure_station-arrival_station) % 5;
 					
     				if(express_list.contains(departure_station)){     // take express first, then regular
-    					char transfer_station = (char) (dir == "SB" ? arrival_station - remain : arrival_station + remain);
+    					char transfer_station = (char) (dir.equals("SB") ? arrival_station - remain : arrival_station + remain);
     					if(exact_time){
         					for(int i = 6; i < 22; i++){
         						for(int j = 0; j < 60; j += 15){
@@ -262,7 +262,7 @@ public class SearchController {
             						train_with_date = dir + start_time + " " + departure_date;
             						temp = getSchedule(train_name, Character.toString(departure_station));
     								String real_temp = getSchedule(train_name, Character.toString(transfer_station));
-    								String trainsfer_arrival = departureToArrival(real_temp);
+    								String transfer_arrival = departureToArrival(real_temp);
     								real_temp = getSchedule(train_name, Character.toString(arrival_station));
     								String arrival_time = "";
     								if(real_temp != null){
@@ -277,8 +277,8 @@ public class SearchController {
             							}
             							else
             							{
-            								String next_train = findRegular(transfer_station, departure_date, trainsfer_arrival, arrival_station ,dir);
-            							    train_list.add(train_with_date + ", first arrival time is: " + trainsfer_arrival + ", " + next_train);
+            								String next_train = findRegular(transfer_station, departure_date, transfer_arrival, arrival_station ,dir);
+            							    train_list.add(train_with_date + ", first arrival time is: " + transfer_arrival + ", " + next_train);
             							    return train_list;
             							}
             						}  							
@@ -302,7 +302,7 @@ public class SearchController {
             						train_with_date = dir + start_time + " " + departure_date;
             						temp = getSchedule(train_name, Character.toString(departure_station));
     								String real_temp = getSchedule(train_name, Character.toString(transfer_station));
-    								String trainsfer_arrival = departureToArrival(real_temp);
+    								String transfer_arrival = departureToArrival(real_temp);
     								real_temp = getSchedule(train_name, Character.toString(arrival_station));
     								String arrival_time = "";
     								if(real_temp != null){
@@ -314,8 +314,8 @@ public class SearchController {
             							    	return train_list;
             							    }
             							    else{
-                								String next_train = findRegular(transfer_station, departure_date, trainsfer_arrival, arrival_station, dir);
-                							    train_list.add(train_with_date + ", first arrival time is: " + trainsfer_arrival + ", " + next_train);            					
+                								String next_train = findRegular(transfer_station, departure_date, transfer_arrival, arrival_station, dir);
+                							    train_list.add(train_with_date + ", first arrival time is: " + transfer_arrival + ", " + next_train);            					
             							    }
             							}
             							else if(type.equals("Any"))
@@ -327,11 +327,11 @@ public class SearchController {
             						    	    //System.out.println(train_with_date + " Arrival time is: " + temp_arrival);
             						    	}
             						    	if(express_count < 2 && j == 0){
-            						    		String next_train = findRegular(transfer_station, departure_date, trainsfer_arrival, arrival_station ,dir);
-            						    		String final_arrival = findRegularTime(transfer_station, departure_date, trainsfer_arrival, arrival_station ,dir);
-            						    		//train_list.add(train_with_date + ", first arrival time is: " + trainsfer_arrival + ", " + next_train);
+            						    		String next_train = findRegular(transfer_station, departure_date, transfer_arrival, arrival_station ,dir);
+            						    		String final_arrival = findRegularTime(transfer_station, departure_date, transfer_arrival, arrival_station ,dir);
+            						    		//train_list.add(train_with_date + ", first arrival time is: " + transfer_arrival + ", " + next_train);
             						    		timePriorityQueue.add(final_arrival+train_name);
-            						    	    map.put(final_arrival+train_name, train_with_date + ", first arrival time is: " + trainsfer_arrival + ", " + next_train);
+            						    	    map.put(final_arrival+train_name, train_with_date + ", first arrival time is: " + transfer_arrival + ", " + next_train);
             						    	    express_count++;
             						    	    //System.out.println(train_with_date + " Arrival time is: " + temp_arrival);
             						    	}
@@ -352,7 +352,7 @@ public class SearchController {
     					}
     				}
     				else{                                 // arrival station is express station
-    					char transfer_station = (char) (dir == "SB" ? departure_station + remain : departure_station - remain);
+    					char transfer_station = (char) (dir.equals("SB") ? departure_station + remain : departure_station - remain);
     					if(exact_time){                   // take regular first, then express
     						Queue<String> timePriorityQueue = new PriorityQueue<>(2, timeComparator);
     				    	HashMap<String, String> map = new HashMap<>();
@@ -365,7 +365,7 @@ public class SearchController {
                 						train_with_date = dir + start_time + " " + departure_date;
                 						temp = getSchedule(train_name, Character.toString(departure_station));
         								String real_temp = getSchedule(train_name, Character.toString(transfer_station));
-        								String trainsfer_arrival = departureToArrival(real_temp);
+        								String transfer_arrival = departureToArrival(real_temp);
         								real_temp = getSchedule(train_name, Character.toString(arrival_station));
         								String arrival_time = "";
         								if(real_temp != null){
@@ -376,8 +376,8 @@ public class SearchController {
                 							if(j == 0)
                 								return train_list;
                 							else if(type.equals("Express")){
-                								List<String> next_train = findExpress(transfer_station, departure_date, trainsfer_arrival, arrival_station ,dir);
-                								train_list.add(train_with_date + ", first arrival time is: " + trainsfer_arrival + " at station " +
+                								List<String> next_train = findExpress(transfer_station, departure_date, transfer_arrival, arrival_station ,dir);
+                								train_list.add(train_with_date + ", first arrival time is: " + transfer_arrival + " at station " +
                 								               transfer_station + ", " + next_train.get(1) + " final arrive at: " + next_train.get(2));
                 							    return train_list;
                 							}
@@ -386,9 +386,9 @@ public class SearchController {
                 								timePriorityQueue.add(arrival_time+train_name);
             						    	    map.put(arrival_time+train_name, train_with_date + " Arrival time is: " + arrival_time);
             						    	    
-                								List<String> next_train = findExpress(transfer_station, departure_date, trainsfer_arrival, arrival_station ,dir);
+                								List<String> next_train = findExpress(transfer_station, departure_date, transfer_arrival, arrival_station ,dir);
                 								timePriorityQueue.add(next_train.get(2)+train_name);
-                								map.put(next_train.get(2)+train_name, train_with_date + ", first arrival time is: " + trainsfer_arrival + " at station " +
+                								map.put(next_train.get(2)+train_name, train_with_date + ", first arrival time is: " + transfer_arrival + " at station " +
                 								        transfer_station + ", " + next_train.get(1) + " final arrive at: " + next_train.get(2));
                 								
                 								train_list.add(map.get(timePriorityQueue.poll()));
@@ -415,7 +415,7 @@ public class SearchController {
                 						train_with_date = dir + start_time + " " + departure_date;
                 						temp = getSchedule(train_name, Character.toString(departure_station));
         								String real_temp = getSchedule(train_name, Character.toString(transfer_station));
-        								String trainsfer_arrival = departureToArrival(real_temp);
+        								String transfer_arrival = departureToArrival(real_temp);
         								real_temp = getSchedule(train_name, Character.toString(arrival_station));
         								String arrival_time = "";
         								if(real_temp != null){
@@ -427,8 +427,8 @@ public class SearchController {
                 							    	return train_list;
                 							    }
                 							    else{
-                    								List<String> next_train = findExpress(transfer_station, departure_date, trainsfer_arrival, arrival_station ,dir);
-                    								train_list.add(train_with_date + ", first arrival time is: " + trainsfer_arrival + " at station " +
+                    								List<String> next_train = findExpress(transfer_station, departure_date, transfer_arrival, arrival_station ,dir);
+                    								train_list.add(train_with_date + ", first arrival time is: " + transfer_arrival + " at station " +
                     								               transfer_station + ", " + next_train.get(1) + " final arrive at: " + next_train.get(2));
                     							}
                 							}
@@ -441,9 +441,9 @@ public class SearchController {
                 						    	    //System.out.println(train_with_date + " Arrival time is: " + temp_arrival);
                 						    	}
                 						    	if(express_count < 3){
-                    								List<String> next_train = findExpress(transfer_station, departure_date, trainsfer_arrival, arrival_station ,dir);
+                    								List<String> next_train = findExpress(transfer_station, departure_date, transfer_arrival, arrival_station ,dir);
                 						    		timePriorityQueue.add(next_train.get(2)+train_name);
-                						    	    map.put(next_train.get(2)+train_name, train_with_date + ", first arrival time is: " + trainsfer_arrival + " at station "+
+                						    	    map.put(next_train.get(2)+train_name, train_with_date + ", first arrival time is: " + transfer_arrival + " at station "+
              								                transfer_station + ", " + next_train.get(1) + " final arrive at: " + next_train.get(2));
                 						    	    express_count++;
                 						    	    //System.out.println(train_with_date + " Arrival time is: " + temp_arrival);
@@ -519,7 +519,11 @@ public class SearchController {
     	    }
     		else if(connection == 2)
     		{   // no need to take express train
-    			if(Math.abs(arrival_station-departure_station) < 5){
+    			if((Math.abs(arrival_station-departure_station) < 7) || 
+    			(Math.abs((departure_station-(dir.equals("SB") ? 'A' : 'Z')))%5 == 1 && Math.abs(arrival_station-departure_station) < 10) ||    // Ex: B to J
+    			(Math.abs((departure_station-(dir.equals("SB") ? 'A' : 'Z')))%5 == 2 && Math.abs(arrival_station-departure_station) < 9) ||     // Ex: C to J
+    			(Math.abs((departure_station-(dir.equals("SB") ? 'A' : 'Z')))%5 == 3 && Math.abs(arrival_station-departure_station) < 8))       // Ex: D to J
+    			{
             		if(!type.equals("Express")){                      // in this case, any = regular
             			if(exact_time){   				              // only one train will be return	
         					for(int i = 6; i < 21; i++){
@@ -564,11 +568,142 @@ public class SearchController {
             			}
             		}
     			}
-    			else{      // distance larger than 5 station
+    			else{      // trips contains at least two express station
+    				int remain = Math.abs((departure_station-(dir.equals("SB") ? 'A' : 'Z')))%5;
+    				char transfer_station1 = (char) (dir.equals("SB") ? departure_station + 5 - remain : departure_station -5 + remain);
+    				remain = Math.abs((arrival_station-(dir.equals("SB") ? 'A' : 'Z')))%5;
+    				char transfer_station2 =  (char) (dir.equals("SB") ? arrival_station - remain : arrival_station + remain);
+    				if(transfer_station1 == transfer_station2){
+    					System.out.println("two transfer stations are same with shouldn't happer!");
+    					return train_list;
+    				}
+					if(exact_time){                   // take regular first, then express, then back to regular
+						Queue<String> timePriorityQueue = new PriorityQueue<>(2, timeComparatorAdvance);
+				    	HashMap<String, String> map = new HashMap<>();
+    					for(int i = 6; i < 21; i++){
+    						for(int j = 0; j < 60; j += 15){
+    							if(j != 0){
+            						String temp = " ";							                        
+            						start_time = "" + (i < 10 ? "0" + i : i) + (j == 0 ? "00" : j);
+            						train_name = dir + start_time;
+            						train_with_date = dir + start_time + " " + departure_date;
+            						temp = getSchedule(train_name, Character.toString(departure_station));
+    								String real_temp = getSchedule(train_name, Character.toString(transfer_station1));
+    								String transfer_arrival1 = departureToArrival(real_temp);
+    								real_temp = getSchedule(train_name, Character.toString(arrival_station));
+    								String arrival_time = "";
+    								if(real_temp != null){
+    								    arrival_time = departureToArrival(real_temp);
+    								}
+            						if(temp.equals(departure_time)){
+            							if(type.equals("Express")){
+            								List<String> next_train1 = findExpress(transfer_station1, departure_date, transfer_arrival1, transfer_station2 ,dir);
+            								String transfer_arrival2 = next_train1.get(2);
+            								List<String> next_train2 = findRegularAdvance(transfer_station2, departure_date, transfer_arrival2, arrival_station ,dir);
+            								train_list.add(train_with_date + ", first arrival time is: " + transfer_arrival1 + " at station " +
+            								               transfer_station1 + ", " + next_train1.get(1) + " second arrive time is: " + next_train1.get(2)+ " at station " +
+                    								       transfer_station2 + ", " + next_train2.get(1) + " final arrive time is: " + next_train2.get(2)) ;
+            							    return train_list;
+            							}
+            							else           // decide transfer or not transfer train
+            							{
+            								timePriorityQueue.add(arrival_time+train_name+"0");
+        						    	    map.put(arrival_time+train_name+"0", train_with_date + " Arrival time is: " + arrival_time);
+        						    	    
+            								List<String> next_train1 = findExpress(transfer_station1, departure_date, transfer_arrival1, transfer_station2 ,dir);
+            								String transfer_arrival2 = next_train1.get(2);
+            								List<String> next_train2 = findRegularAdvance(transfer_station2, departure_date, transfer_arrival2, arrival_station ,dir);
+            								timePriorityQueue.add(next_train2.get(2)+train_name+"1");
+            								map.put(next_train2.get(2)+train_name+"1", train_with_date + ", first arrival time is: " + transfer_arrival1 + " at station " +
+            								               transfer_station1 + ", " + next_train1.get(1) + " second arrive time is: " + next_train1.get(2)+ " at station " +
+                    								       transfer_station2 + ", " + next_train2.get(1) + " final arrive time is: " + next_train2.get(2)) ;
+		
+            								train_list.add(map.get(timePriorityQueue.poll()));
+            							    return train_list;
+            							}
+            						}  							
+        						}
+    						}     						
+    					}
+					}
+					else{  // return top 5 combinatino train, regular -> express -> regular or regular
+						
+						int regular_count = 0;
+						int express_count = 0;
+						Queue<String> timePriorityQueue = new PriorityQueue<>(6, timeComparatorAdvance);
+				    	HashMap<String, String> map = new HashMap<>();
+    					for(int i = 6; i < 21; i++){
+    						for(int j = 0; j < 60; j += 15){
+    							if(j != 0)
+    							{
+            						String temp = " ";							                        
+            						start_time = "" + (i < 10 ? "0" + i : i) + (j == 0 ? "00" : j);
+            						train_name = dir + start_time;
+            						train_with_date = dir + start_time + " " + departure_date;
+            						temp = getSchedule(train_name, Character.toString(departure_station));
+    								String real_temp = getSchedule(train_name, Character.toString(transfer_station1));
+    								String transfer_arrival1 = departureToArrival(real_temp);
+    								real_temp = getSchedule(train_name, Character.toString(arrival_station));
+    								String arrival_time = "";
+    								if(real_temp != null){
+    								    arrival_time = departureToArrival(real_temp);
+    								}
+    								if(earlierTime(departure_time, temp) || temp.equals(departure_time)){
+            							if(type.equals("Express")){
+            								List<String> next_train1 = findExpress(transfer_station1, departure_date, transfer_arrival1, transfer_station2 ,dir);
+            								String transfer_arrival2 = next_train1.get(2);
+            								List<String> next_train2 = findRegularAdvance(transfer_station2, departure_date, transfer_arrival2, arrival_station ,dir);
+            								timePriorityQueue.add(next_train2.get(2)+train_name+"1");
+            								map.put(next_train2.get(2)+train_name+"1", train_with_date + ", first arrival time is: " + transfer_arrival1 + " at station " +
+            								               transfer_station1 + ", " + next_train1.get(1) + " second arrive time is: " + next_train1.get(2)+ " at station " +
+                    								       transfer_station2 + ", " + next_train2.get(1) + " final arrive time is: " + next_train2.get(2)) ;
+		
+            						    	if(i == 21 || timePriorityQueue.size() == 5){
+            						    		int limit = (5 < timePriorityQueue.size() ? 5 : timePriorityQueue.size());
+            						    		for(int x = 0; x < limit; x++){
+            						    			//System.out.println(timePriorityQueue.peek());
+            						    			train_list.add(map.get(timePriorityQueue.poll()));
+            						    		}
+            						    		return train_list;
+            						    	}
+                    							
+            							}
+            							else if(type.equals("Any"))
+            							{  //System.out.println(regular_count);
+            						    	if(regular_count < 3){
+            						    		timePriorityQueue.add(arrival_time+train_name+"0");
+            						    	    map.put(arrival_time+train_name+"0", train_with_date + " Arrival time is: " + arrival_time);
+            						    	    regular_count++;
+            						    	    //System.out.println(train_with_date + " Arrival time is: " + temp_arrival);
+            						    	}
+            						    	if(express_count < 3){
+                								List<String> next_train1 = findExpress(transfer_station1, departure_date, transfer_arrival1, transfer_station2 ,dir);
+                								String transfer_arrival2 = next_train1.get(2);
+                								List<String> next_train2 = findRegularAdvance(transfer_station2, departure_date, transfer_arrival2, arrival_station ,dir);
+                								timePriorityQueue.add(next_train2.get(2)+train_name+"1");
+                								map.put(next_train2.get(2)+train_name+"1", train_with_date + ", first arrival time is: " + transfer_arrival1 + " at station " +
+                								               transfer_station1 + ", " + next_train1.get(1) + " second arrive time is: " + next_train1.get(2)+ " at station " +
+                        								       transfer_station2 + ", " + next_train2.get(1) + " final arrive time is: " + next_train2.get(2)) ;
+            						    	    express_count++;
+            						    	    //System.out.println(train_with_date + " Arrival time is: " + temp_arrival);
+            						    	}
+            						    	if(i == 21 || timePriorityQueue.size() == 6){
+            						    		int limit = (5 < timePriorityQueue.size() ? 5 : timePriorityQueue.size());
+            						    		for(int x = 0; x < limit; x++){
+            						    			//System.out.println(timePriorityQueue.peek());
+            						    			train_list.add(map.get(timePriorityQueue.poll()));
+            						    		}
+            						    		return train_list;
+            						    	}              								           							  		 
+            							}
+            						}
+    							}					
+    						}
+    					}
+					}
     				
     			}
     		}	
-    	    return train_list;
         }            
         return train_list;
 	}
@@ -701,6 +836,44 @@ public class SearchController {
 		}
 	};
 	
+	// comparator for time priority queue with two connection
+	public static Comparator<String> timeComparatorAdvance = new Comparator<String>(){
+		@Override
+		public int compare(String s1, String s2){
+			String t1 = s1.substring(0, 5);
+			String t2 = s2.substring(0, 5);
+			int t1_hour = Integer.parseInt(t1.substring(0,2));
+			int t2_hour = Integer.parseInt(t2.substring(0,2));
+			int t1_min = Integer.parseInt(t1.substring(3));
+			int t2_min = Integer.parseInt(t2.substring(3));
+			
+			if(t1_hour < t2_hour)
+				return -1;
+			else if(t1_hour > t2_hour)
+				return 1;
+			else{
+				if(t1_min < t2_min)
+					return -1;
+				else if(t1_min > t2_min)
+					return 1;
+				else{
+					int train1 = Integer.parseInt(s1.substring(7, 11));
+					int train2 = Integer.parseInt(s2.substring(7, 11));
+					if(train1 < train2)
+						return 1;
+					else if(train1 > train2)
+						return -1;
+					else{
+						if(s1.charAt(11) == '1')            // 1 means this is a connected train
+							return 1;
+						else
+							return -1;
+					}
+				}
+			}
+		}
+	};
+	
 	// change departure time to arrival time
 	public String departureToArrival(String departure_time){
 		SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
@@ -779,6 +952,34 @@ public class SearchController {
 		}
 		return train_info;
     }
+	
+	// helper function to find connected one earlies regular train
+	public List<String> findRegularAdvance( char departure_station, String departure_date, String departure_time, 
+			                   char arrival_station, String dir)
+	{
+		List<String> train_info = new ArrayList<>();
+		for(int i = 6; i < 21; i++){
+			for(int j = 0; j < 60; j += 15){
+				if( j != 0){                     // don't support express
+					String temp = " ";							                        
+					String start_time = "" + (i < 10 ? "0" + i : i) + j;
+					String train_name = dir + start_time;
+					String train_with_date = dir + start_time + " " + departure_date;
+					temp = getSchedule(train_name, Character.toString(departure_station));
+					String real_temp = getSchedule(train_name, Character.toString(arrival_station));
+					String temp_arrival = departureToArrival(real_temp);
+					if(earlierTime(departure_time, temp) || temp.equals(departure_time)){
+						train_info.add(train_name);
+						train_info.add(train_with_date);
+						train_info.add(temp_arrival);
+						return train_info;
+					}  							
+			    }
+			}
+		}
+		
+		return train_info;
+	}
 	
 	
 }

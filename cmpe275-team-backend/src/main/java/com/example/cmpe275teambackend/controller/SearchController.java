@@ -6,7 +6,9 @@ import org.springframework.web.bind.annotation.*;
 
 import com.example.cmpe275teambackend.model.Transaction;
 import com.example.cmpe275teambackend.model.SB_Schedule;
+import com.example.cmpe275teambackend.model.Ticket;
 import com.example.cmpe275teambackend.model.Train;
+import com.example.cmpe275teambackend.model.SearchResult;
 import com.example.cmpe275teambackend.model.NB_Schedule;
 import com.example.cmpe275teambackend.repository.SB_Repository;
 import com.example.cmpe275teambackend.repository.NB_Repository;
@@ -947,6 +949,8 @@ public class SearchController {
 				train_info.add(train_name);
 				train_info.add(train_with_date);
 				train_info.add(temp_arrival);
+				int price = (Math.abs(departure_station-arrival_station) / 5 + 1) * 2;
+				train_info.add(Integer.toString(price));
 				return train_info;
 			}  							
 		}
@@ -972,6 +976,8 @@ public class SearchController {
 						train_info.add(train_name);
 						train_info.add(train_with_date);
 						train_info.add(temp_arrival);
+						int price = Math.abs(departure_station-arrival_station) / 5 + 1;
+						train_info.add(Integer.toString(price));
 						return train_info;
 					}  							
 			    }

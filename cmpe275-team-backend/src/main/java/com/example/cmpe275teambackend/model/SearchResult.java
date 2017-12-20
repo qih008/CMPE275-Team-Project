@@ -33,7 +33,6 @@ public class SearchResult implements Serializable{
     
     // constructors, setters, getters, etc.
    
-    
     public void setTrain_name(String train_name){
     	this.train_name = train_name;
     }

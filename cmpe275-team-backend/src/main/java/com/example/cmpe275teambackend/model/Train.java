@@ -82,7 +82,7 @@ public class Train implements Serializable{
  
     @OneToMany(mappedBy = "train")
     @JsonIgnore
-    private List<Ticket> tickets = new ArrayList<>();    // one transaction can map to many tickets
+    private List<Ticket> tickets = new ArrayList<>();    // one train can map to many tickets
   
     
     // constructors, setters, getters, etc.

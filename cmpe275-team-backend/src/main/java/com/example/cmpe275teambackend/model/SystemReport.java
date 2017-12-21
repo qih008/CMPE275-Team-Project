@@ -35,11 +35,11 @@ public class SystemReport implements Serializable{
 	
 	private long any_latency;
 	
-	private float none_percentage;
+	private String none_percentage;
 	
-	private float one_percentage;
+	private String one_percentage;
 	
-	private float any_percentage;
+	private String any_percentage;
  
     // constructors, setters, getters, etc.
     
@@ -107,27 +107,27 @@ public class SystemReport implements Serializable{
     	return any_latency;
     }  
     
-    public void setAny_percentage(float any_percentage){
+    public void setAny_percentage(String any_percentage){
     	this.any_percentage = any_percentage;
     }
     
-    public float getAny_percentage(){
+    public String getAny_percentage(){
     	return any_percentage;
     } 
     
-    public void setOne_percentage(float one_percentage){
+    public void setOne_percentage(String one_percentage){
     	this.one_percentage = one_percentage;
     }
     
-    public float getOne_percentage(){
+    public String getOne_percentage(){
     	return one_percentage;
     } 
     
-    public void setNone_percentage(float none_percentage){
+    public void setNone_percentage(String none_percentage){
     	this.none_percentage = none_percentage;
     }
     
-    public float getNone_percentage(){
+    public String getNone_percentage(){
     	return none_percentage;
     } 
     

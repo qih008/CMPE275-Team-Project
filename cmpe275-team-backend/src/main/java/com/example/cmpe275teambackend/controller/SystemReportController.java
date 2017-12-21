@@ -42,8 +42,11 @@ public class SystemReportController {
 		for(int k = 0; k < 30; k++){			
 			SystemReport report = new SystemReport();
 			String date = sdf.format(cal.getTime());
-			List<Long> latency_list = new ArrayList<>();
+			List<String> latency_list = new ArrayList<>();
 			report.setDate(date);
+			report.setAny_percentage("0");
+			report.setOne_percentage("0");
+			report.setNone_percentage("0");
 			cal.add(Calendar.DATE, 1);
 			systemreportRepository.save(report);
 		}
@@ -68,9 +71,10 @@ public class SystemReportController {
 	    	float none = (float) report.getNone_request() / total;
 	    	float one = (float) report.getOne_request() / total;
 	    	float any = (float) report.getAny_request() / total;
-	    	report.setNone_percentage(none);
-	    	report.setOne_percentage(one);
-	    	report.setAny_percentage(any);
+	    	//String formattedString = String.format("%.02f", percentage);
+	    	report.setNone_percentage(String.format("%.02f", none));
+	    	report.setOne_percentage(String.format("%.02f", one));
+	    	report.setAny_percentage(String.format("%.02f", any));
 	    }
 	    
 	    SystemReport newReport = systemreportRepository.save(report);

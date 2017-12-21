@@ -1,0 +1,43 @@
+{% extends "base.html" %} {% import 'macros.html' as macros %} 
+{% block content %}
+
+<div class="col-md-4 col-md-offset-4">
+
+      <div align="center">
+        <h2>California Ultra-Speed Rail Train Transport System</h2>
+      </div>
+
+<hr>
+<h4> New User -- Sign Up</h4>
+<form method="post" action="/index"  id="db_post" name="db_post">
+
+    {{ form1.hidden_tag() }}  
+    {{ macros.render_field(form1.Notes1, placeholder='Please enter Email',type ='email',label_visible = false) }}
+    {{ macros.render_field(form1.Notes3, placeholder='Please enter Name', type='dbNotes', label_visible=false) }}
+    {{ macros.render_field(form1.Notes2, placeholder='Please enter Pw', type='password', label_visible=false) }}
+    {{ macros.render_field(form1.confirm, placeholder='Please reenter Pw', type='password', label_visible=false) }}
+    {{ macros.render_field(form1.Notes4, placeholder='Please enter Address', type='dbNotes', label_visible=false) }}
+
+    
+    <div align="center"><button type="submit" class="btn btn-primary">Submit</button></p></div>
+
+</form>   
+
+<hr>
+<h4> Already have account -- Login</h4>
+<form method="post" action="/index"  id="db_post" name="db_view">
+
+    {{ form2.hidden_tag() }} 
+    
+   
+    {{ macros.render_field(form2.user_email, placeholder='Please user email', type='dbNotes', label_visible=false) }}
+    {{ macros.render_field(form2.pw, placeholder='Please enter Password', type='password', label_visible=false) }}
+ 
+    
+    <div align="center"><button type="submit" class="btn btn-primary">Login</button></p></div>
+
+</form>   
+
+</div>
+
+{% endblock %}  

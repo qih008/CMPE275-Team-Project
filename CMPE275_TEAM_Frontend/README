@@ -1,0 +1,7 @@
+# CMPE285 Team Project
+
+We used FLASK framework to implement this project with python language (python2.7).
+To run our website , you need to install flask, pandas and Quandl first, then go to our project 
+root, and type "python run.py", then you can go to your brower and type "localhost:5000"
+Then the website will show up. Enter amount with appropriate investing strategy the
+recommendation and data chart will appear.
